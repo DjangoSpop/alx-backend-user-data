@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""
-Module for password encryption and validation
-"""
+"""Module for password encryption and validation."""
 import bcrypt
+...
+
 
 def hash_password(password: str) -> bytes:
     """
@@ -16,9 +16,10 @@ def hash_password(password: str) -> bytes:
     """
     return bcrypt.hashpw(password.encode(), bcrypt.gensalt())
 
+
 def is_valid(hashed_password: bytes, password: str) -> bool:
     """
-    Validates a password against a hashed password.
+    Validate a password against a hashed password.
 
     Args:
         hashed_password (bytes): Hashed password.
