@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+"""module to create basic class"""
 import base64
 from typing import TypeVar
 from api.v1.auth.auth import Auth

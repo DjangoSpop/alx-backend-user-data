@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+"""module to make auth"""
 from typing import List, TypeVar
 from flask import rquest 
 import flask
