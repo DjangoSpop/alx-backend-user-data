@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""module to create basic class"""
+"""Module to create basic class."""
 import base64
 from typing import TypeVar
 from api.v1.auth.auth import Auth
 from models.user import User
  
 class BasicAuth(Auth):
+    """Basic authentication class api."""
+    
     def extract_base64_authorization_header(self, authorization_header:str) -> str:
         """Extract base64 authorization header."""
         if authorization_header is None or type(authorization_header) is not str:
