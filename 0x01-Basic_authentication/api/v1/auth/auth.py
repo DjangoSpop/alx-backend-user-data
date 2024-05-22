@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-"""module to make auth"""
+"""Module to manage authentication."""
 from typing import List, TypeVar
-from flask import rquest 
+from flask import request 
 import flask
 
 
 class Auth:
-    """Auth class to manage the API authentication."""
+    """Class to manage the API authentication."""
+    
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """Require authentication for some paths."""
         if path is None or excluded_paths is None or excluded_paths == []:
@@ -16,18 +17,14 @@ class Auth:
         if path in excluded_paths:
             return False
         return True
-      
-        
 
     def authorization_header(self, request=None) -> str:
-        """Authorization header."""
-        if request is None or "Authorization" not in request.headers:
-            return None
-        return request.headers["Authorization"]
+        """Authorize the request."""
+        pass
 
     def current_user(self, request=None) -> TypeVar('User'):
-        """Current user."""
-        return None
+        """Get the current user."""
+        pass
     def session_cookie(self, request=None):
         """Session cookie."""
         if request is None or "session_id" not in request.cookies:
