@@ -20,6 +20,12 @@ elif os.getenv("AUTH_TYPE") == "basic_auth":
     auth = BasicAuth()
 
 
+@app.errorhandler(403)
+def forbidden(e):
+    """Return 403 error."""
+    return jsonify({"error": "Forbidden"}), 403
+
+
 @app.errorhandler(404)
 def not_found(error) -> str:
     """Not found handler."""
@@ -33,7 +39,6 @@ def unauthorized(error) -> str:
 
 
 @app.errorhandler(401)
-@app.errorhandler(403)
 def before_request(error) -> str:
     """Before request handler."""
     if auth is None:
@@ -41,8 +46,6 @@ def before_request(error) -> str:
     else:
         if auth.authorization_header(request) is None:
             abort(401)
-        if auth.current_user(request) is None:
-            abort(403)
     return ({'users without Authorization header - 401'}), 401
 
 
