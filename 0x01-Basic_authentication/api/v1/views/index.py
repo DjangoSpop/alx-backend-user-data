@@ -44,5 +44,4 @@ def status() -> str:
     - the status code of the forbidden response
     """
 
-
-abort(403)
+    abort(403)
