@@ -6,16 +6,17 @@ from flask import Flask, jsonify, abort, request
 from flask_cors import (CORS, cross_origin)
 import os
 
-
 app = Flask(__name__)
 app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 auth = None
 if os.getenv("AUTH_TYPE") == "auth":
     from api.v1.auth.auth import Auth
+
     auth = Auth()
 elif os.getenv("AUTH_TYPE") == "basic_auth":
     from api.v1.auth.basic_auth import BasicAuth
+
     auth = BasicAuth()
 
 
@@ -35,12 +36,14 @@ def unauthorized(error) -> str:
 @app.errorhandler(403)
 def before_request(error) -> str:
     """Before request handler."""
-    if auth is not None:
+    if auth is None:
+        pass
+    else:
         if auth.authorization_header(request) is None:
             abort(401)
         if auth.current_user(request) is None:
             abort(403)
-    return None
+    return ({'users without Authorization header - 401'}), 401
 
 
 if __name__ == "__main__":
