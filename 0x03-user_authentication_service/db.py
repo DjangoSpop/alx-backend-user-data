@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """DB module
 """
 from sqlalchemy import create_engine
@@ -73,8 +74,3 @@ class DB:
             else:
                 raise ValueError(f"User has no attribute {key}")
         self._session.commit()
-        
-        
-            
-           
-    
