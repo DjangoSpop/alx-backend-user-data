@@ -4,10 +4,13 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import Session
+from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.exc import NoResultFound
 import uuid
 
 from user import Base, User
 import user
+from sqlalchemy.exc import InvalidRequestError
 
 
 class DB:
@@ -34,7 +37,44 @@ class DB:
     def add_user(self,email: str, hashed_password: str ) -> user:
         """Add a new user to the database
         """
-        new_user = User(email=email, hashed_password=hashed_password)
-        self._session.add(new_user)
+        user = User(email=email, hashed_password=hashed_password)
+        self._session.add(user)
         self._session.commit()
-        return new_user
+        return user
+    def find_user_by(self, **kwargs) -> User:
+        """_summary_
+
+        Raises:
+                    NoResultFound: _description_
+                    InvalidRequestError: _description_
+
+                Returns:
+                    User: _description_
+                """        
+        try:
+            return self._session.query(User).filter_by(**kwargs).one()
+        except NoResultFound:
+            raise NoResultFound("No user Found")
+        except InvalidRequestError:
+                raise InvalidRequestError("Invalid Request")
+    def update_user(self, user_id: int, **kwargs) -> None:
+        """_summary_
+
+        Args:
+            user_id (int): _description_
+
+        Raises:
+            AttributeError: _description_
+        """        
+        user = self.find_user_by(id=user_id)
+        for key, value in kwargs.items():
+            if hasattr(user, key):
+                setattr(user, key, value)
+            else:
+                raise ValueError(f"User has no attribute {key}")
+        self._session.commit()
+        
+        
+            
+           
+    
