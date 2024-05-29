@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
-"""
-DB module
-"""
+"""DB module."""
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
@@ -12,7 +10,7 @@ from user import Base, User
 
 
 class DB:
-    """DB class"""
+    """DB class."""
 
     def __init__(self) -> None:
         """Initialize a new DB instance."""
@@ -30,8 +28,7 @@ class DB:
         return self.__session
 
     def add_user(self, email: str, hashed_password: str) -> User:
-        """
-        Add a new user to the database.
+        """Add a new user to the database.
 
         Args:
             email (str): The email of the user.
@@ -46,8 +43,7 @@ class DB:
         return new_user
 
     def find_user_by(self, **kwargs) -> User:
-        """
-        Find a user by the given keyword arguments.
+        """Find a user by the given keyword arguments.
 
         Args:
             **kwargs: The keyword arguments to filter the user.
@@ -67,15 +63,14 @@ class DB:
             raise InvalidRequestError("Invalid request")
 
     def update_user(self, user_id: int, **kwargs) -> None:
-        """
-        Update a user's attributes.
+        """Update a user's attributes.
 
         Args:
             user_id (int): The ID of the user to update.
-            **kwargs: The keyword arguments representing.
+            **kwargs: The keyword arguments.
 
         Raises:
-            ValueError: If any of the keyword arguments.
+            ValueError: If any of the keyword of the user.
         """
         user = self.find_user_by(id=user_id)
         for key, value in kwargs.items():
