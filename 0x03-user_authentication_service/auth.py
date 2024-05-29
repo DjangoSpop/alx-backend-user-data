@@ -6,6 +6,8 @@ from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import NoResultFound
 from db import DB
 
+"""Module create A class authentication"""
+
 def _hash_password(password: str) -> bytes:
     """_summary_
 
@@ -31,27 +33,47 @@ class Auth:
 
         Returns:
             User: _description_
-        """        
-        if self._db.find_user_by(email=email):
-            raise ValueError("User {} already exists".format(email))
-        return self._db.add_user(email, _hash_password(password))
-    
+        """
+        try:        
+            self._db.find_user_by(email=email)
+            raise ValueError("User {email} already exists".format(email))
+        except:
+            self._db.add_user(email, _hash_password(password))
+            user = self._db.add_user(email, _hash_password)
+            return user
     
     def create_session(self, email: str) -> str:
         try:
-             user = self._db.find_user_by(email=email)
+            user = self._db.find_user_by(email=email)
+            session_id = str(uuid.uuid4())
+            self._db.update_user(user.id, session_id=session_id)
+            return session_id
         except NoResultFound:
             return None
 
-        session_id = str(uuid.uuid4())
-        self._db.update_user(user.id, session_id=session_id)
-        return session_id
+    def get_user_from_session_id(self, session_id: str)->User:
+        if session_id is None:
+            return None
+        try:
+            return self._db.find_user_by(session_id=session_id)
+        except NoResultFound:
+            return None 
+        
     
     
     def valid_login(self, email: str, password: str) -> bool:
+        """_summary_
+
+        Args:
+            email (str): _description_
+            password (str): _description_
+
+        Returns:
+            bool: _description_
+        """        
         try:
             user = self._db.find_user_by(email=email)
-            password_bytes = password.encode() if isinstance(password, str) else password
+            password_bytes = password.encode('utf-8') if isinstance(password, str) else password
             hashed_password_bytes = user.hashed_password.encode() if isinstance(user.hashed_password, str) else user.hashed_password
             return bcrypt.checkpw(password_bytes, hashed_password_bytes)
         except NoResultFound:

@@ -2,7 +2,7 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
-
+"""_summary_Returns:_type_: _description_"""
 Base = declarative_base()
 
 class User(Base):

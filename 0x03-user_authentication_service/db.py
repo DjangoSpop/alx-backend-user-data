@@ -13,7 +13,16 @@ from user import Base, User
 import user
 from sqlalchemy.exc import InvalidRequestError
 
+"""_summary_
 
+    Raises:
+        NoResultFound: _description_
+        InvalidRequestError: _description_
+        ValueError: _description_
+
+    Returns:
+        _type_: _description_
+"""
 class DB:
     """DB class
     """
@@ -34,14 +43,15 @@ class DB:
             DBSession = sessionmaker(bind=self._engine)
             self.__session = DBSession()
         return self.__session
-    
-    def add_user(self,email: str, hashed_password: str ) -> user:
+
+    def add_user(self, email: str, hashed_password: str) -> user:
         """Add a new user to the database
         """
         user = User(email=email, hashed_password=hashed_password)
         self._session.add(user)
         self._session.commit()
         return user
+
     def find_user_by(self, **kwargs) -> User:
         """_summary_
 
@@ -51,13 +61,14 @@ class DB:
 
                 Returns:
                     User: _description_
-                """        
+                """
         try:
             return self._session.query(User).filter_by(**kwargs).one()
         except NoResultFound:
             raise NoResultFound("No user Found")
         except InvalidRequestError:
-                raise InvalidRequestError("Invalid Request")
+            raise InvalidRequestError("Invalid Request")
+
     def update_user(self, user_id: int, **kwargs) -> None:
         """_summary_
 
@@ -66,7 +77,7 @@ class DB:
 
         Raises:
             AttributeError: _description_
-        """        
+        """
         user = self.find_user_by(id=user_id)
         for key, value in kwargs.items():
             if hasattr(user, key):
