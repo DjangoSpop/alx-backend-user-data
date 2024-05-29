@@ -1,18 +1,16 @@
 #!/usr/bin/env python3
-# Module creation of the user table database
+"""Module creation of the user table database"""
 from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
 
 class User(Base):
-    """_summary_
+    """User class for database table 'users'
+
     Args:
-        Base (_type_): _description_
-    Returns:
-        _type_: _description_
+        Base (declarative_base): Base class for declarative SQLAlchemy class
     """
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True, nullable=False)
@@ -22,10 +20,11 @@ class User(Base):
     reset_token = Column(String(250), nullable=True)
 
     def __repr__(self):
-        """_summary_
+        """String representation of User instance
+
         Returns:
-            _type_: _description_
+            str: User instance representation
         """
-        return f"<User(id={self.id}), email='{self.email}'>"
-        # return "<User(id='%s', email='%s', hashed_password='%s')>" % (
-        #     self.id, self.email, self.hashed_password)
+        return "<User(id='{}', email='{}', hashed_password='{}')>".format(
+            self.id, self.email, self.hashed_password
+        )
